@@ -10,8 +10,10 @@ import { Todo } from './todo.model';
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
   newTodoTitle: string = '';
-
-  constructor(private todoService: TodoService) {}
+  editingTodoId: string | null | undefined = null;
+  addTodoError = false;
+  editTodoError: { [key: string]: boolean } = {};
+  constructor(private todoService: TodoService) { }
 
   ngOnInit(): void {
     this.loadTodos();
@@ -23,41 +25,58 @@ export class TodoListComponent implements OnInit {
     });
   }
 
-    private formatNumber(value: number): string {
-    return value < 10 ? `0${value}` : value.toString();
+  startEditing(todo: Todo): void {
+    this.editingTodoId = todo.id;
+  }
+
+  finishEditing(todo: Todo): void {
+    if (todo.id && todo.title.trim().length > 0) {
+      this.todoService.updateTodo(todo.id, todo).then(() => {
+        this.editingTodoId = null;
+      });
+    } else {
+      this.editTodoError[todo.id!] = true;
+      setTimeout(() => {
+        this.editTodoError[todo.id!] = false;
+      }, 3000);
+    }
   }
 
 
-  showEmptyTitleError = false;
+  private formatNumber(value: number): string {
+    return value < 10 ? `0${value}` : value.toString();
+  }
+
+  
   addTodo(title: string): void {
 
     if (this.newTodoTitle.trim().length === 0) {
-      this.showEmptyTitleError = true;
+      this.addTodoError = true;
 
       setTimeout(() => {
-        this.showEmptyTitleError = false;
+        this.addTodoError = false;
       }, 3000);
 
       return;
     }
 
-    this.showEmptyTitleError = false;
+    this.addTodoError = false;
     this.newTodoTitle = '';
     const currentDate = new Date();
     const formattedDate = `${this.formatNumber(currentDate.getDate())}-${this.formatNumber(currentDate.getMonth() + 1)}-${currentDate.getFullYear()}`;
     const formattedTime = `${this.formatNumber(currentDate.getHours())}:${this.formatNumber(currentDate.getMinutes())}:${this.formatNumber(currentDate.getSeconds())}`;
-  
+
     const newTodo: Todo = {
       title,
       completed: false,
       createdAt: `${formattedDate} ${formattedTime}`,
     };
-    
+
     this.todoService.addTodo(newTodo).then(() => {
-      
+
     });
   }
-  
+
   updateTodoStatus(todo: Todo): void {
     if (todo.id) {
       todo.completed = !todo.completed;
@@ -68,10 +87,10 @@ export class TodoListComponent implements OnInit {
   }
 
   deleteTodo(id: string | undefined): void {
-  if (id !== undefined) {
-    this.todoService.deleteTodo(id).then(() => {
+    if (id !== undefined) {
+      this.todoService.deleteTodo(id).then(() => {
 
-    });
+      });
+    }
   }
-}
 }
