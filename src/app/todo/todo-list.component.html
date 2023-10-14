@@ -1,20 +1,16 @@
 <div class="container mt-4">
   <div class="col-md-12 mx-auto">
     <h1><strong>MY TODOS</strong></h1>
-    <div class="mt-3">
-      <input [(ngModel)]="newTodoTitle" placeholder="New To Do" class="form-control col-10" maxlength="40">
-      <button class="btn btn-primary mt-2 btn-sm" (click)="addTodo(newTodoTitle)">Add To Do</button>
-      <div *ngIf="addTodoError" class="text-danger mt-2">To Do title cannot be empty.</div>
-    </div>
+
     <div class="card mt-3">
       <div class="card-body" style="overflow-x: auto;">
         <table class="table">
           <thead>
             <tr style="border-bottom: 3px solid #000; font-size: 18px;">
-              <th scope="col">Title</th>
-              <th scope="col" class="text-center">Status</th>
-              <th scope="col" class="text-center">Date Added</th>
-              <th scope="col" class="text-center">Actions</th>
+              <th scope="col" class="align-middle">Title</th>
+              <th scope="col" class="text-center align-middle">Status</th>
+              <th scope="col" class="text-center align-middle">Date Added</th>
+              <th scope="col" class="text-center align-middle">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -22,7 +18,7 @@
               <td colspan="4" class="text-center">No Todos available</td>
             </tr>
             <tr *ngFor="let todo of todos">
-              <td>
+              <td class="align-middle">
                 <div class="form-check">
                   <input type="checkbox" class="form-check-input" [ngModel]="todo.completed"
                     (change)="updateTodoStatus(todo)">
@@ -35,24 +31,34 @@
                     </ng-template>
                   </label>
                   <button class="btn btn-sm" *ngIf="editingTodoId === todo.id" (click)="finishEditing(todo)">
-                    <i class="fa-solid fa-check" style="color: #005eff;"></i>
+                    <i class="fa-solid fa-check fa-lg" style="color: #005eff;"></i>
                   </button>
                   <div *ngIf="editTodoError[todo.id!]" class="text-danger mt-2">To Do title cannot be empty.</div>
                 </div>
               </td>
-              <td class="text-center {{ todo.completed ? 'completed-text' : 'in-progress-text' }}">
+              <td class="text-center align-middle {{ todo.completed ? 'completed-text' : 'in-progress-text' }}">
                 {{ todo.completed ? 'Completed' : 'In Progress' }}
               </td>
-              <td class="text-center">{{ todo.createdAt }}</td>
-              <td class="text-center">
-                <button class="btn btn-sm" *ngIf="!editingTodoId || editingTodoId !== todo.id" (click)="startEditing(todo)">
-                  <i class="fa-solid fa-pen-to-square" style="color: #005eff;"></i>
+              <td class="text-center align-middle">{{ todo.createdAt }}</td>
+              <td class="text-center align-middle">
+                <button class="btn btn-sm" *ngIf="!editingTodoId || editingTodoId !== todo.id"
+                  (click)="startEditing(todo)">
+                  <i class="fa-solid fa-pen-to-square fa-lg" style="color: #005eff;"></i>
                 </button>
                 <button class="btn btn-sm" (click)="deleteTodo(todo.id)">
-                  <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
+                  <i class="fa-solid fa-trash fa-lg" style="color: #ff0000;"></i>
                 </button>
               </td>
             </tr>
+            <td colspan="4" class="d-flex align-items-center">
+              <label class="form-check-label">
+                <input [(ngModel)]="newTodoTitle" placeholder="New To Do" class="form-control col-10" maxlength="40">
+              </label>
+              <button class="btn btn-sm" (click)="addTodo(newTodoTitle)">
+                <i class="fa-solid fa-plus fa-xl" style="color: #005eff;"></i>
+              </button>
+            </td>
+            <div *ngIf="addTodoError" class="text-danger mt-2">To Do title cannot be empty.</div>
           </tbody>
         </table>
       </div>
