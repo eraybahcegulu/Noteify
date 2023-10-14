@@ -25,6 +25,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -91,8 +92,18 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2,
+            "browserTarget": "todo-app:build:production"
+          }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "3264c35e-65fd-4e9e-87e9-f5a3c9a1a544"
   }
 }

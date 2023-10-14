@@ -1,0 +1,13 @@
+.completed {
+    background-color: rgb(228, 228, 241);
+    text-decoration: line-through;
+    
+  }
+
+  .completed-text {
+    color: green;
+  }
+  
+  .in-progress-text {
+    color: orange;
+  }
