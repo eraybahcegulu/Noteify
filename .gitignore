@@ -388,14 +388,14 @@ FodyWeavers.xsd
 .vscode
 # Local History for Visual Studio Code
 .history/
-
+.angular
 # Windows Installer files from build outputs
 *.cab
 *.msi
 *.msix
 *.msm
 *.msp
-
+.firebaserc
 # JetBrains Rider
 *.sln.iml
 
@@ -403,3 +403,7 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json
