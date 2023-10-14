@@ -7,7 +7,7 @@
         <table class="table">
           <thead>
             <tr style="border-bottom: 3px solid #000; font-size: 18px;">
-              <th scope="col" class="align-middle">Title</th>
+              <th scope="col" class="align-middle">To Do Title</th>
               <th scope="col" class="text-center align-middle">Status</th>
               <th scope="col" class="text-center align-middle">Date Added</th>
               <th scope="col" class="text-center align-middle">Actions</th>
@@ -20,7 +20,7 @@
             <tr *ngFor="let todo of todos">
               <td class="align-middle">
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" [ngModel]="todo.completed"
+                  <input type="checkbox" class="form-check-input"  style="cursor: pointer;" [ngModel]="todo.completed "
                     (change)="updateTodoStatus(todo)">
                   <label class="form-check-label" [class.completed]="todo.completed">
                     <ng-container *ngIf="!editingTodoId || editingTodoId !== todo.id; else editTodo">
