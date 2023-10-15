@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from './todo.service';
 import { Todo } from './todo.model';
-
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
@@ -14,6 +14,10 @@ export class TodoListComponent implements OnInit {
   addTodoError = false;
   editTodoError: { [key: string]: boolean } = {};
   constructor(private todoService: TodoService) { }
+
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.todos, event.previousIndex, event.currentIndex);
+  }
 
   ngOnInit(): void {
     this.loadTodos();
@@ -47,9 +51,8 @@ export class TodoListComponent implements OnInit {
     return value < 10 ? `0${value}` : value.toString();
   }
 
-  
-  addTodo(title: string): void {
 
+  addTodo(title: string): void {
     if (this.newTodoTitle.trim().length === 0) {
       this.addTodoError = true;
 

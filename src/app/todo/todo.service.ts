@@ -19,7 +19,7 @@ export class TodoService {
       map(changes => changes.map(c => this.mapTodoFromSnapshot(c)))
     );
   }
-  
+
   private mapTodoFromSnapshot(change: SnapshotAction<Todo>): Todo {
     const data = change.payload.val() as Todo;
     return {
@@ -27,14 +27,15 @@ export class TodoService {
       title: data.title,
       completed: data.completed,
       createdAt: data.createdAt,
+
     };
   }
 
   async addTodo(todo: Todo): Promise<any> {
-  const ref = await this.todoList.push(todo);
-  
-  return ref;
-}
+    const ref = await this.todoList.push(todo);
+
+    return ref;
+  }
 
   updateTodo(id: string, todo: Todo): Promise<void> {
     return this.todoList.update(id, todo);

@@ -8,13 +8,14 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { TodoListComponent } from './todo/todo-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [AppComponent, TodoListComponent],
   imports: [
     NgbModule,
     RouterModule,
+    DragDropModule,
     BrowserModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -22,4 +23,4 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

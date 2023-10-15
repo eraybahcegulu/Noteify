@@ -1,7 +1,6 @@
 <div class="container mt-4">
   <div class="col-md-12 mx-auto">
     <h1><strong>MY TODOS</strong></h1>
-
     <div class="card mt-3">
       <div class="card-body" style="overflow-x: auto;">
         <table class="table">
@@ -13,14 +12,14 @@
               <th scope="col" class="text-center align-middle">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="boundary" cdkDropList (cdkDropListDropped)="drop($event)">
             <tr *ngIf="todos.length === 0">
               <td colspan="4" class="text-center">No Todos available</td>
             </tr>
-            <tr *ngFor="let todo of todos">
+            <tr *ngFor="let todo of todos" cdkDragBoundary=".boundary" cdkDragLockAxis="y" cdkDrag>
               <td class="align-middle">
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input"  style="cursor: pointer;" [ngModel]="todo.completed "
+                  <input type="checkbox" class="form-check-input" style="cursor: pointer;" [ngModel]="todo.completed "
                     (change)="updateTodoStatus(todo)">
                   <label class="form-check-label" [class.completed]="todo.completed">
                     <ng-container *ngIf="!editingTodoId || editingTodoId !== todo.id; else editTodo">
