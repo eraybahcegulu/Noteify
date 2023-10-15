@@ -13,10 +13,16 @@ export class TodoListComponent implements OnInit {
   editingTodoId: string | null | undefined = null;
   addTodoError = false;
   editTodoError: { [key: string]: boolean } = {};
-  constructor(private todoService: TodoService) { }
+  constructor(private todoService: TodoService) { this.todos = []; }
 
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.todos, event.previousIndex, event.currentIndex);
+
+    this.todoService.updateTodosOrder(this.todos).then(() => {
+      console.log('Order updated successfully in Firebase');
+    }).catch(error => {
+      console.error('Error updating order in Firebase', error);
+    });
   }
 
   ngOnInit(): void {
@@ -75,16 +81,17 @@ export class TodoListComponent implements OnInit {
       createdAt: `${formattedDate} ${formattedTime}`,
     };
 
-    this.todoService.addTodo(newTodo).then(() => {
-
-    });
+    this.todoService.updateTodosOrder(this.todos).then(() => {
+      this.todoService.addTodo(newTodo).then(() => {
+      });
+    })
   }
+
 
   updateTodoStatus(todo: Todo): void {
     if (todo.id) {
       todo.completed = !todo.completed;
       this.todoService.updateTodo(todo.id, todo).then(() => {
-
       });
     }
   }

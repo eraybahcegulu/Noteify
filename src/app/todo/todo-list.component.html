@@ -1,6 +1,15 @@
 <div class="container mt-4">
   <div class="col-md-12 mx-auto">
     <h1><strong>MY TODOS</strong></h1>
+    <div class="mt-2">
+      <label class="form-check-label">
+        <input [(ngModel)]="newTodoTitle" placeholder="New To Do" class="form-control col-10" maxlength="40">
+      </label>
+      <button class="btn btn-sm" (click)="addTodo(newTodoTitle)">
+        <i class="fa-solid fa-plus fa-xl" style="color: #005eff;"></i>
+      </button>
+    </div>
+    <div *ngIf="addTodoError" class="text-danger mt-2">To Do title cannot be empty.</div>
     <div class="card mt-3">
       <div class="card-body" style="overflow-x: auto;">
         <table class="table">
@@ -49,15 +58,6 @@
                 </button>
               </td>
             </tr>
-            <td colspan="4" class="d-flex align-items-center">
-              <label class="form-check-label">
-                <input [(ngModel)]="newTodoTitle" placeholder="New To Do" class="form-control col-10" maxlength="40">
-              </label>
-              <button class="btn btn-sm" (click)="addTodo(newTodoTitle)">
-                <i class="fa-solid fa-plus fa-xl" style="color: #005eff;"></i>
-              </button>
-            </td>
-            <div *ngIf="addTodoError" class="text-danger mt-2">To Do title cannot be empty.</div>
           </tbody>
         </table>
       </div>
