@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, SnapshotAction } from '@angular/fire/compat/database';
 import { Observable, combineLatest } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Todo } from './todo.model';
 
 @Injectable({
@@ -37,13 +37,13 @@ export class TodoService {
     );
   }
 
-
   private mapTodoFromSnapshot(change: SnapshotAction<Todo>): Todo {
     const data = change.payload.val() as Todo;
     return {
       id: change.payload.key as string,
       title: data.title,
       completed: data.completed,
+      focused: data.focused,
       createdAt: data.createdAt,
 
     };
@@ -65,14 +65,11 @@ export class TodoService {
     return orderRef.update(newOrder);
   }
 
-
-
   async addTodo(todo: Todo): Promise<any> {
     const ref = await this.todoList.push(todo);
 
     return ref;
   }
-
 
   updateTodo(id: string, todo: Todo): Promise<void> {
     return this.todoList.update(id, todo);

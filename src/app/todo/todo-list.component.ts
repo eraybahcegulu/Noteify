@@ -78,6 +78,7 @@ export class TodoListComponent implements OnInit {
     const newTodo: Todo = {
       title,
       completed: false,
+      focused: false,
       createdAt: `${formattedDate} ${formattedTime}`,
     };
 
@@ -87,6 +88,13 @@ export class TodoListComponent implements OnInit {
     })
   }
 
+  focusTodoStatus(todo: Todo): void {
+    if (todo.id) {
+      todo.focused = !todo.focused;
+      this.todoService.updateTodo(todo.id, todo).then(() => {
+      });
+    }
+  }
 
   updateTodoStatus(todo: Todo): void {
     if (todo.id) {

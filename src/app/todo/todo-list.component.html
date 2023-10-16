@@ -27,25 +27,29 @@
             </tr>
             <tr *ngFor="let todo of todos" cdkDragBoundary=".boundary" cdkDragLockAxis="y" cdkDrag>
               <td class="align-middle">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" style="cursor: pointer;" [ngModel]="todo.completed "
-                    (change)="updateTodoStatus(todo)">
-                  <label class="form-check-label" [class.completed]="todo.completed">
-                    <ng-container *ngIf="!editingTodoId || editingTodoId !== todo.id; else editTodo">
-                      {{ todo.title }}
-                    </ng-container>
-                    <ng-template #editTodo>
-                      <input [(ngModel)]="todo.title" class="form-control" maxlength="40">
-                    </ng-template>
-                  </label>
-                  <button class="btn btn-sm" *ngIf="editingTodoId === todo.id" (click)="finishEditing(todo)">
-                    <i class="fa-solid fa-check fa-lg" style="color: #005eff;"></i>
-                  </button>
-                  <div *ngIf="editTodoError[todo.id!]" class="text-danger mt-2">To Do title cannot be empty.</div>
-                </div>
+                <i [ngClass]="{'fa fa-square-check': todo.completed, 'far fa-square': !todo.completed}"
+                  style="cursor: pointer;" [style.color]="todo.completed ? 'green' : 'blue'"
+                  (click)="updateTodoStatus(todo)"></i>
+                <i *ngIf="!todo.completed"
+                  [ngClass]="{'fa fa-arrows-to-dot': todo.focused, 'fas fa-spinner': !todo.focused}"
+                  style="cursor: pointer; margin-left: 5px;" [style.color]="todo.focused ? 'red' : 'orange'"
+                  (click)="focusTodoStatus(todo)"></i>
+                <label style="margin-left: 5px;" class="form-check-label" [class.completed]="todo.completed">
+                  <ng-container *ngIf="!editingTodoId || editingTodoId !== todo.id; else editTodo">
+                    {{ todo.title }}
+                  </ng-container>
+                  <ng-template #editTodo>
+                    <input [(ngModel)]="todo.title" class="form-control" maxlength="40">
+                  </ng-template>
+                </label>
+                <button class="btn btn-sm" *ngIf="editingTodoId === todo.id" (click)="finishEditing(todo)">
+                  <i class="fa-solid fa-check fa-lg" style="color: #005eff;"></i>
+                </button>
+                <div *ngIf="editTodoError[todo.id!]" class="text-danger mt-2">To Do title cannot be empty.</div>
               </td>
-              <td class="text-center align-middle {{ todo.completed ? 'completed-text' : 'in-progress-text' }}">
-                {{ todo.completed ? 'Completed' : 'In Progress' }}
+              <td
+                class="text-center align-middle {{ todo.completed ? 'completed-text' : (todo.focused ? 'focused-text' : 'in-progress-text') }}">
+                {{ todo.completed ? 'Completed' : (todo.focused ? 'Focused' : 'In Progress') }}
               </td>
               <td class="text-center align-middle">{{ todo.createdAt }}</td>
               <td class="text-center align-middle">
