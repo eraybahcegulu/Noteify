@@ -32,3 +32,7 @@
 .cdk-drag-placeholder {
   visibility: hidden;
 }
+
+.btn{
+  border: none;
+}
