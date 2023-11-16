@@ -1,4 +1,4 @@
-# TodoApp-Angular-FirebaseDB
+Noteify
 
 ![1](https://github.com/eraybahcegulu/todo-app-angular/assets/84785201/ab27004b-81ee-4240-b935-0fe29b090b3c)
 
