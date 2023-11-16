@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, SnapshotAction } from '@angular/fire/compat/database';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Todo } from './todo.model';
+import { Todo } from '../models/todo.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,13 +11,13 @@ export class TodoService {
   private todoList: AngularFireList<Todo>;
 
   constructor(private db: AngularFireDatabase) {
-    this.todoList = db.list('/todos');
+    this.todoList = db.list('Todo/todos');
   }
 
   getTodos(): Observable<Todo[]> {
     return combineLatest([
       this.todoList.snapshotChanges(),
-      this.db.object('/todosOrder').valueChanges(),
+      this.db.object('Todo/todosOrder').valueChanges(),
     ]).pipe(
       map(([changes, order]) => {
         const todos = changes.map(c => this.mapTodoFromSnapshot(c));
@@ -61,7 +61,7 @@ export class TodoService {
       }
     });
 
-    const orderRef = this.db.object('/todosOrder');
+    const orderRef = this.db.object('Todo/todosOrder');
     return orderRef.update(newOrder);
   }
 
@@ -75,13 +75,16 @@ export class TodoService {
     return this.todoList.update(id, todo);
   }
 
-  deleteTodo(id: string): Promise<void> {
+  async deleteTodo(id: string): Promise<void> {
     const todoRef = this.todoList.remove(id);
-    const orderRef = this.db.object('/todosOrder/' + id);
+    const orderRef = this.db.object('Todo/todosOrder/' + id);
     orderRef.remove();
 
-    return Promise.all([orderRef, todoRef])
-      .then(() => console.log('Todo and order removed successfully'))
-      .catch(error => console.error('Error removing todo and order', error));
+    try {
+      await Promise.all([orderRef, todoRef]);
+      return console.log('Todo and order removed successfully');
+    } catch (error) {
+      return console.error('Error removing todo and order', error);
+    }
   }
 }

@@ -1,0 +1,20 @@
+<div style="display: flex; align-items: center; justify-content: center;">
+    <nz-card style="width:300px; text-align: center; " [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+        <nz-card-meta
+        [nzTitle]="titleTemplate"
+        ></nz-card-meta>
+      </nz-card>
+      <ng-template #titleTemplate>
+        <div style="font-size: 30px;"> <strong> NOTEIFY </strong></div>
+      </ng-template>
+
+      <ng-template #actionSetting>
+        <span [style.color]="homeTodoColor" class="todo-span" (click)="Todo()">Todo</span>
+      </ng-template>
+      <ng-template #actionEdit>
+        <span [style.color]="homeNoteColor" (click)="Note()"> Note </span>
+      </ng-template>
+      <ng-template #actionEllipsis>
+        <span [style.color]="homeShoppingColor" (click)="Shopping()"> Shopping</span>
+      </ng-template>
+</div>

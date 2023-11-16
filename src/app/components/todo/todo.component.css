@@ -1,0 +1,47 @@
+.completed {
+    background-color: rgb(228, 228, 241);
+    text-decoration: line-through;
+  
+  }
+  
+  .completed-text {
+    color: green;
+  }
+  
+  .in-progress-text {
+    color: orange;
+  }
+  
+  .focused-text{
+    color: red;
+  }
+  
+  .cdk-drag {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    cursor: grabbing;
+  
+  }
+  
+  .cdk-drag-preview {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    background-color: rgb(231, 229, 229);
+    padding: 8px;
+  }
+  
+  .cdk-drag-placeholder {
+    visibility: hidden;
+  }
+  
+  .btn{
+    border: none;
+  }
+
+  .input .ant-input {
+    width: 200px;
+    margin: 0 8px 8px 0;
+  }
+
+  .form-check-label {
+    overflow: hidden;
+  }
