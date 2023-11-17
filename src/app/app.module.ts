@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from "@angular/fire/compat";
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { environment } from '../environments/environment';
+import { firebase } from '../config/firebaseConfig';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,7 +26,7 @@ import { NzModule } from './nz.module';
     NzModule,
     FormsModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(firebase.firebaseConfig),
     AngularFireDatabaseModule, NgbModule,
   ],
   bootstrap: [AppComponent],

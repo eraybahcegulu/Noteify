@@ -13,19 +13,14 @@ export class TodoComponent implements OnInit {
   @Input() todoColor: string = 'dodgerblue';
   todos: Todo[] = [];
   newTodoTitle: string = '';
-  editingTodoId: string | null | undefined = null;
+  editingTodoId: string | null | undefined;
   addTodoError = false;
   editTodoError: { [key: string]: boolean } = {};
   constructor(private todoService: TodoService) {}
 
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.todos, event.previousIndex, event.currentIndex);
-
-    this.todoService.updateTodosOrder(this.todos).then(() => {
-      console.log('Order updated successfully in Firebase');
-    }).catch(error => {
-      console.error('Error updating order in Firebase', error);
-    });
+    this.todoService.updateTodosOrder(this.todos);
   }
 
   ngOnInit(): void {
@@ -40,6 +35,7 @@ export class TodoComponent implements OnInit {
 
   startEditing(todo: Todo): void {
     this.editingTodoId = todo.id;
+    console.log(this.editingTodoId );
   }
 
   finishEditing(todo: Todo): void {
@@ -75,7 +71,7 @@ export class TodoComponent implements OnInit {
     this.addTodoError = false;
     this.newTodoTitle = '';
     const currentDate = new Date();
-    const formattedDate = `${this.formatNumber(currentDate.getDate())}-${this.formatNumber(currentDate.getMonth() + 1)}-${currentDate.getFullYear()}`;
+    const formattedDate = `${this.formatNumber(currentDate.getDate())}.${this.formatNumber(currentDate.getMonth() + 1)}.${currentDate.getFullYear()}`;
     const formattedTime = `${this.formatNumber(currentDate.getHours())}:${this.formatNumber(currentDate.getMinutes())}:${this.formatNumber(currentDate.getSeconds())}`;
 
     const newTodo: Todo = {
@@ -86,33 +82,27 @@ export class TodoComponent implements OnInit {
     };
 
     this.todoService.updateTodosOrder(this.todos).then(() => {
-      this.todoService.addTodo(newTodo).then(() => {
-      });
+      this.todoService.addTodo(newTodo)
     })
   }
 
   focusTodoStatus(todo: Todo): void {
     todo.focused = !todo.focused;
     if (todo.id) {
-      this.todoService.updateTodo(todo.id, todo).then(() => {
-        
-      });
+      this.todoService.updateTodo(todo.id, todo)
     }
   }
 
   updateTodoStatus(todo: Todo): void {
     todo.completed = !todo.completed;
     if (todo.id) {
-      this.todoService.updateTodo(todo.id, todo).then(() => {
-      });
+      this.todoService.updateTodo(todo.id, todo)
     }
   }
 
   deleteTodo(id: string | undefined): void {
     if (id !== undefined) {
-      this.todoService.deleteTodo(id).then(() => {
-
-      });
+      this.todoService.deleteTodo(id)
     }
   }
 }

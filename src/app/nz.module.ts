@@ -5,14 +5,23 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 const nzModules = [
     NzInputModule,
     NzIconModule,
     NzEmptyModule,
     NzAlertModule,
     NzCardModule,
+    NzCollapseModule,
     NzTableModule,
+    NzTagModule,
+    NzFormModule,
+    NzButtonModule,
+    NzBadgeModule
   ];
 
   @NgModule({

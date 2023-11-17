@@ -3,114 +3,118 @@
 <div class="container-sm mt-4">
     <div class="row justify-content-center">
 
-            <nz-card style="max-width: 1200px;" >
-                <div class="container mt-4">
-                    <div class="col-md-12 mx-auto">
-                        <h4>MY TODOS</h4>
-                        <div class="mt-2" style="display: flex; align-items: center;">
-                            <label class="form-check-label">
-                                   <input [(ngModel)]="newTodoTitle" nz-input placeholder="New To Do"  nzSize="default" maxlength="40" />
-                            </label>
-
-                            
-                            <button class="btn btn-sm" (click)="addTodo(newTodoTitle)">
-                                <i class="fa-solid fa-plus fa-xl" style="color: #005eff; font-size: 15px; "></i>
-                            </button>
-                            
-                        </div>
-
-                        <nz-alert style="margin-top: 10px; width: 200px;" *ngIf="addTodoError" nzType="error" nzMessage="Title cannot be empty." nzShowIcon> </nz-alert>
-
-                        <nz-card style="margin-top: 10px;">
-                                <nz-table #basicTable nzSize="small" [nzScroll]="{ y: '300px' }" [nzNoResult]="noTodo">
-                                    <thead>
-                                        <tr style="border-bottom: 3px solid #000; font-size: 15px;">
-                                            <th scope="col" class="align-middle">To Do Title</th>
-                                            <th scope="col" class="text-center align-middle">Status</th>
-                                            <th scope="col" class="text-center align-middle">Date Added</th>
-                                            <th scope="col" class="text-center align-middle">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="boundary" cdkDropList (cdkDropListDropped)="drop($event)">
-
-                                        <ng-template #noTodo>
-                                            <tr *ngIf="todos.length === 0">
-                                                <td colspan="4" class="text-center">
-                                                    <nz-empty [nzNotFoundContent]="null"></nz-empty>
-                                                   
-                                                    <nz-alert nzType="warning" nzMessage=" No Todos available" nzShowIcon></nz-alert>
-                                                </td>
-                                            </tr>
-                                           </ng-template>
-
-                                        <tr *ngFor="let todo of todos" cdkDragBoundary=".boundary" cdkDragLockAxis="y"
-                                            cdkDrag>
-                                            <td class="align-middle">
-
-                                                <div style="display: flex; align-items: center;">
-                                                    <i [ngClass]="{'fa fa-square-check': todo.completed, 'far fa-square': !todo.completed}"
-                                                        style="cursor: pointer;"
-                                                        [style.color]="todo.completed ? 'green' : 'blue'"
-                                                        (click)="updateTodoStatus(todo)"></i>
+        <nz-card style="max-width: 1200px;">
+            <div class="container mt-4">
+                <div class="col-md-12 mx-auto">
+                    <h4>MY TODOS</h4>
+                    <div class="mt-2" style="display: flex; align-items: center;">
+                        <label class="form-check-label">
+                            <input [(ngModel)]="newTodoTitle" nz-input placeholder="New To Do" nzSize="default"
+                                maxlength="40" />
+                        </label>
 
 
-                                                    <span [id]="'loadingIcon_' + todo.id" nz-icon nzType="loading"
-                                                        nzTheme="outline" *ngIf="!todo.completed && !todo.focused"
-                                                        style="cursor: pointer; color: orange; margin-left: 5px; "
-                                                        (click)="focusTodoStatus(todo)"></span>
+                        <button class="btn btn-sm" (click)="addTodo(newTodoTitle)">
+                            <i class="fa-solid fa-plus fa-xl" style="color: #005eff; font-size: 15px; "></i>
+                        </button>
 
-                                                    <i *ngIf="todo.focused && !todo.completed "
-                                                        class="fa-solid fa-arrows-to-dot"
-                                                        style="color: red; cursor: pointer; margin-left: 5px;"
-                                                        (click)="focusTodoStatus(todo)"></i>
-
-
-                                                    <label style="margin-left: 10px;" class="form-check-label"
-                                                    
-                                                        [class.completed]="todo.completed">
-                                                        <ng-container
-                                                            *ngIf="!editingTodoId || editingTodoId !== todo.id; else editTodo">
-                                                            {{ todo.title }}
-                                                        </ng-container>
-                                                        <ng-template #editTodo>
-                                                            <input [(ngModel)]="todo.title" nz-input placeholder="New To Do"  nzSize="default" maxlength="40" />
-                                                        </ng-template>
-                                                    </label>
-                                                    <button class="btn btn-sm" *ngIf="editingTodoId === todo.id"
-                                                        (click)="finishEditing(todo)">
-                                                        <i class="fa-solid fa-check fa-lg" style="color: #005eff; font-size: 15px;"></i>
-                                                    </button>
-                                                </div>
-
-                                                    <nz-alert style="margin-top: 15px; width: 200px;" *ngIf="editTodoError[todo.id!]"  nzType="error" nzMessage="Title cannot be empty." nzShowIcon> </nz-alert>
-                                            </td>
-                                            <td
-                                                class="text-center align-middle {{ todo.completed ? 'completed-text' : (todo.focused ? 'focused-text' : 'in-progress-text') }}">
-                                                {{ todo.completed ? 'Completed' : (todo.focused ? 'Focused' : 'In
-                                                Progress') }}
-                                            </td>
-                                            <td class="text-center align-middle">{{ todo.createdAt }}</td>
-                                            <td class="text-center align-middle">
-                                                <button class="btn btn-sm"
-                                                    *ngIf="!editingTodoId || editingTodoId !== todo.id"
-                                                    (click)="startEditing(todo)">
-                                                    <span nz-icon nzType="edit" nzTheme="outline" ></span>
-
-                                                </button>
-
-                                                
-                                                <button class="btn btn-sm" (click)="deleteTodo(todo.id)">
-                                                    <span nz-icon nzType="delete" nzTheme="outline" style="color: red;"></span>
-
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </nz-table>
-                            </nz-card>
                     </div>
+
+                    <nz-alert style="margin-top: 10px; width: 200px;" *ngIf="addTodoError" nzType="error"
+                        nzMessage="Title cannot be empty." nzShowIcon> </nz-alert>
+
+                    <nz-card style="margin-top: 10px;">
+                        <nz-table #basicTable nzSize="small" [nzScroll]="{ y: '300px' }" [nzNoResult]="noTodo">
+                            <thead>
+                                <tr style="border-bottom: 3px solid #000; font-size: 15px;">
+                                    <th scope="col" class="align-middle">To Do Title</th>
+                                    <th scope="col" class="text-center align-middle">Status</th>
+                                    <th scope="col" class="text-center align-middle">Date Added</th>
+                                    <th scope="col" class="text-center align-middle">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="boundary" cdkDropList (cdkDropListDropped)="drop($event)">
+
+                                <ng-template #noTodo>
+                                    <tr *ngIf="todos.length === 0">
+                                        <td colspan="4">
+                                            <nz-empty [nzNotFoundContent]="null"></nz-empty>
+
+                                            <nz-alert nzType="warning" nzMessage=" No todos available"
+                                                nzShowIcon></nz-alert>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+
+                                <tr *ngFor="let todo of todos" cdkDragBoundary=".boundary" cdkDragLockAxis="y" cdkDrag>
+                                    <td class="align-middle">
+
+                                        <div style="display: flex; align-items: center;">
+                                            <i [ngClass]="{'fa fa-square-check': todo.completed, 'far fa-square': !todo.completed}"
+                                                style="cursor: pointer;"
+                                                [style.color]="todo.completed ? 'green' : 'blue'"
+                                                (click)="updateTodoStatus(todo)"></i>
+
+
+                                            <span [id]="'loadingIcon_' + todo.id" nz-icon nzType="loading"
+                                                nzTheme="outline" *ngIf="!todo.completed && !todo.focused"
+                                                style="cursor: pointer; color: orange; margin-left: 5px; "
+                                                (click)="focusTodoStatus(todo)"></span>
+
+                                            <i *ngIf="todo.focused && !todo.completed "
+                                                class="fa-solid fa-arrows-to-dot"
+                                                style="color: red; cursor: pointer; margin-left: 5px;"
+                                                (click)="focusTodoStatus(todo)"></i>
+
+
+                                            <label style="margin-left: 10px;" class="form-check-label"
+                                                [class.completed]="todo.completed">
+                                                <ng-container
+                                                    *ngIf="!editingTodoId || editingTodoId !== todo.id; else editTodo">
+                                                    {{ todo.title }}
+                                                </ng-container>
+                                                <ng-template #editTodo>
+                                                    <input [(ngModel)]="todo.title" nz-input placeholder="New To Do"
+                                                        nzSize="default" maxlength="40" />
+                                                </ng-template>
+                                            </label>
+                                            <button class="btn btn-sm" *ngIf="editingTodoId === todo.id"
+                                                (click)="finishEditing(todo)">
+                                                <i class="fa-solid fa-check fa-lg"
+                                                    style="color: #005eff; font-size: 15px;"></i>
+                                            </button>
+                                        </div>
+
+                                        <nz-alert style="margin-top: 15px; width: 200px;"
+                                            *ngIf="editTodoError[todo.id!]" nzType="error"
+                                            nzMessage="Title cannot be empty." nzShowIcon> </nz-alert>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <nz-tag style="margin-left: 10px;" *ngIf="todo.completed" [nzColor]="'green'">Completed</nz-tag>
+                                        <nz-tag style="margin-left: 10px;" *ngIf="todo.focused && !todo.completed" [nzColor]="'red'">Focused</nz-tag>
+                                        <nz-tag style="margin-left: 10px;" *ngIf="!todo.focused && !todo.completed" [nzColor]="'orange'">In Progress</nz-tag>
+                                    </td>
+                                    <td class="text-center align-middle">{{ todo.createdAt }}</td>
+                                    <td class="text-center align-middle">
+                                        <button class="btn btn-sm" *ngIf="!editingTodoId || editingTodoId !== todo.id"
+                                            (click)="startEditing(todo)">
+                                            <span nz-icon nzType="edit" nzTheme="outline"></span>
+
+                                        </button>
+
+
+                                        <button class="btn btn-sm" (click)="deleteTodo(todo.id)">
+                                            <span nz-icon nzType="delete" nzTheme="outline" style="color: red;"></span>
+
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </nz-card>
                 </div>
-            </nz-card>
-        
+            </div>
+        </nz-card>
+
     </div>
 </div>
