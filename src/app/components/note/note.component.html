@@ -1,1 +1,41 @@
 <app-home [homeNoteColor]="noteColor"></app-home>
+<div class="container-sm mt-4">
+    <div class="row justify-content-center">
+        <nz-card style="max-width: 720px;">
+            <div class="row justify-content-center">
+                <nz-card style="max-width: 650px;">
+                    <textarea maxlength="500" [(ngModel)]="newNote" style="margin-top: 10px;" nz-input
+                        placeholder="My Note" [nzAutosize]="{ minRows: 3, maxRows: 5 }"></textarea>
+                    <button (click)="addNote(newNote)" style="margin-top: 10px;" nz-button nzType="primary">
+                        Save
+                    </button>
+                    <nz-alert style="margin-top: 10px; width: 200px;" *ngIf="newNoteError" nzType="error"
+                        nzMessage="Note cannot be empty." nzShowIcon> </nz-alert>
+                </nz-card>
+
+            </div>
+
+            <nz-collapse *ngIf="notes.length > 0" nzAccordion
+                style="margin-top: 20px; overflow-y: auto; max-height: 300px; ">
+                <nz-collapse-panel *ngFor="let note of notes.reverse()" [nzHeader]="Header">
+                    <ng-template #Header>
+                        <strong> {{note.createdAt}}</strong>
+                    </ng-template>
+
+                    <div style="max-height: 200px; overflow-y: auto;">
+                        <p style="margin: 0; word-wrap: break-word;">
+                            {{ note.note }}
+                        </p>
+                    </div>
+                    <button style="margin-top: 10px;" (click)="deleteNote(note.id)" nz-button nzType="primary"
+                        nzDanger>Delete</button>
+                </nz-collapse-panel>
+            </nz-collapse>
+
+            <div *ngIf="notes.length === 0" class="container " style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <nz-empty  [nzNotFoundContent]="null"> </nz-empty>
+                <nz-alert style="width: 200px;" nzType="warning" nzMessage=" No todos available" nzShowIcon></nz-alert>
+            </div>
+        </nz-card>
+    </div>
+</div>
