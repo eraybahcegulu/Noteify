@@ -70,9 +70,14 @@
                     </ng-template>
 
                     <nz-card nzType="inner" style="margin-top: 20px; margin-bottom: 20px;"
-                        *ngFor="let noteKey of title.notes | keyvalue" [nzTitle]="createdAt" [nzExtra]="extraTemplate">
+                        *ngFor="let noteKey of title.notes | keyvalue" [nzTitle]="createdAt">
                         <ng-container *ngIf="isNoteObject(noteKey.value)">
                             <p style="word-wrap: break-word;"> {{noteKey.value.note }}</p>
+
+                            <div style="display: flex; justify-content: flex-end;">
+                                <button (click)="deleteNote(title.id, noteKey.key)" 
+                                        nz-button nzType="primary" nzDanger>Delete</button>
+                            </div>
                         </ng-container>
 
                         <ng-template #createdAt>
@@ -84,12 +89,9 @@
 
                     </nz-card>
 
-                    <nz-alert *ngIf="(title.notes ?? []).length === 0" nzType="warning"
+                    <nz-alert  *ngIf="(title.notes ?? []).length === 0" nzType="warning"
                         nzMessage="No notes found in {{title.title}} title" nzShowIcon></nz-alert>
 
-                    <ng-template #extraTemplate>
-                        <a> <i class="fa-solid fa-xmark" style="color: #000000;"></i> </a>
-                    </ng-template>
                 </nz-collapse-panel>
             </nz-collapse>
 

@@ -3,7 +3,7 @@ import { AngularFireDatabase, AngularFireList, SnapshotAction } from '@angular/f
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { NestedData, Title } from '../models/note.model';
+import { NotesData, Title } from '../models/note.model';
 
 @Injectable({
   providedIn: 'root',
@@ -47,12 +47,12 @@ export class NoteService {
     await this.titleList.remove(id);
   }
 
-  async addNoteToTitle(newNoteObject: NestedData, title: Title): Promise<any> {
+  async addNoteToTitle(newNoteObject: NotesData, title: Title): Promise<any> {
     if (!title.notes) {
       title.notes = [];
     }
 
-    const newNote: NestedData = {
+    const newNote: NotesData = {
       note: newNoteObject.note,
       createdAt: newNoteObject.createdAt,
     };
@@ -62,5 +62,13 @@ export class NoteService {
 
     const ref = await noteListRef.push(newNote);
     return { id: ref.key as string, ...newNote };
+  }
+
+
+  async deleteNote(titleId: string, noteId: string): Promise<void> {
+
+    const notePath = `Note/titles/${titleId}/notes`;
+    const noteListRef = this.db.list(notePath);
+    await noteListRef.remove(noteId);
   }
 }

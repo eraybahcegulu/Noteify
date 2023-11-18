@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NestedData, Title } from '../../models/note.model';
+import { NotesData, Title } from '../../models/note.model';
 import { NoteService } from '../../services/note.service';
 @Component({
   selector: 'app-note',
@@ -99,7 +99,7 @@ export class NoteComponent implements OnInit {
     const formattedDate = `${this.formatNumber(currentDate.getDate())}.${this.formatNumber(currentDate.getMonth() + 1)}.${currentDate.getFullYear()}`;
     const formattedTime = `${this.formatNumber(currentDate.getHours())}:${this.formatNumber(currentDate.getMinutes())}:${this.formatNumber(currentDate.getSeconds())}`;
 
-    const newNoteObject: NestedData = {
+    const newNoteObject: NotesData = {
       note: newNote,
       createdAt: `${formattedDate} ${formattedTime}`,
     };
@@ -131,4 +131,13 @@ export class NoteComponent implements OnInit {
     return typeof value === 'object' && value !== null && 'createdAt' in value;
   } //***********value bir nesne olmalı, createdAt özelliği içerdiğinin kontrolü ve true döndürülmesi***********
 
+  deleteNote(titleId: string | undefined, noteId: string | undefined): void {
+    this.newTitle = '';
+    this.titleSelect = '';
+    if (titleId !== undefined && noteId !== undefined) {
+      this.noteService.deleteNote(titleId, noteId).then(() => {
+
+      });
+    }
+  }
 }
