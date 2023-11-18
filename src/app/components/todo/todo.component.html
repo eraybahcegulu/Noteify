@@ -2,7 +2,6 @@
 
 <div class="container-sm mt-4">
     <div class="row justify-content-center">
-
         <nz-card style="max-width: 1200px;">
             <div class="container mt-4">
                 <div class="col-md-12 mx-auto">
@@ -15,7 +14,7 @@
 
 
                         <button class="btn btn-sm" (click)="addTodo(newTodoTitle)">
-                            <i class="fa-solid fa-plus fa-xl" style="color: #005eff; font-size: 15px; "></i>
+                            <i class="fa-solid fa-plus fa-xl" style="color: black; font-size: 15px; "></i>
                         </button>
 
                     </div>
@@ -52,7 +51,7 @@
                                         <div style="display: flex; align-items: center;">
                                             <i [ngClass]="{'fa fa-square-check': todo.completed, 'far fa-square': !todo.completed}"
                                                 style="cursor: pointer;"
-                                                [style.color]="todo.completed ? 'green' : 'blue'"
+                                                [style.color]="todo.completed ? 'green' : 'black'"
                                                 (click)="updateTodoStatus(todo)"></i>
 
 
@@ -81,7 +80,7 @@
                                             <button class="btn btn-sm" *ngIf="editingTodoId === todo.id"
                                                 (click)="finishEditing(todo)">
                                                 <i class="fa-solid fa-check fa-lg"
-                                                    style="color: #005eff; font-size: 15px;"></i>
+                                                    style="color: black; font-size: 15px;"></i>
                                             </button>
                                         </div>
 
@@ -90,9 +89,12 @@
                                             nzMessage="Title cannot be empty." nzShowIcon> </nz-alert>
                                     </td>
                                     <td class="text-center align-middle">
-                                        <nz-tag style="margin-left: 10px;" *ngIf="todo.completed" [nzColor]="'green'">Completed</nz-tag>
-                                        <nz-tag style="margin-left: 10px;" *ngIf="todo.focused && !todo.completed" [nzColor]="'red'">Focused</nz-tag>
-                                        <nz-tag style="margin-left: 10px;" *ngIf="!todo.focused && !todo.completed" [nzColor]="'orange'">In Progress</nz-tag>
+                                        <nz-tag style="margin-left: 10px;" *ngIf="todo.completed"
+                                            [nzColor]="'green'">Completed</nz-tag>
+                                        <nz-tag style="margin-left: 10px;" *ngIf="todo.focused && !todo.completed"
+                                            [nzColor]="'red'">Focused</nz-tag>
+                                        <nz-tag style="margin-left: 10px;" *ngIf="!todo.focused && !todo.completed"
+                                            [nzColor]="'orange'">In Progress</nz-tag>
                                     </td>
                                     <td class="text-center align-middle">{{ todo.createdAt }}</td>
                                     <td class="text-center align-middle">
@@ -115,6 +117,5 @@
                 </div>
             </div>
         </nz-card>
-
     </div>
 </div>

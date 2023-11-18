@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TodoService } from '../../services/todo.service';
 import { Todo } from 'src/app/models/todo.model';
-import { Note } from 'src/app/models/note.model';
+import { Title } from 'src/app/models/note.model';
 import { NoteService } from '../../services/note.service';
 @Component({
   selector: 'app-home',
@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   @Input() homeNoteColor: string = '';
   @Input() homeShoppingColor: string = '';
   todos: Todo[] = [];
-  notes: Note[] = [];
+  notes: Title[] = [];
   focusedTodosLength: number = 0;
   inProgressTodosLength: number = 0;
   constructor(private router: Router, private todoService: TodoService, private noteService: NoteService) {}
@@ -34,8 +34,8 @@ export class HomeComponent implements OnInit {
   }
 
   private loadNotes(): void {
-    this.noteService.getNotes().subscribe((notes) => {
-      this.notes = notes;
+    this.noteService.getTitles().subscribe((titles) => {
+      this.notes = titles;
 
     });
   }

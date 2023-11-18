@@ -10,6 +10,9 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+
 const nzModules = [
     NzInputModule,
     NzIconModule,
@@ -21,7 +24,9 @@ const nzModules = [
     NzTagModule,
     NzFormModule,
     NzButtonModule,
-    NzBadgeModule
+    NzBadgeModule,
+    NzSelectModule,
+    NzDividerModule
   ];
 
   @NgModule({

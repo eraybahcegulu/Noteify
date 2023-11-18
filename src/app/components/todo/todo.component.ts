@@ -51,11 +51,9 @@ export class TodoComponent implements OnInit {
     }
   }
 
-
   private formatNumber(value: number): string {
     return value < 10 ? `0${value}` : value.toString();
   }
-
 
   addTodo(title: string): void {
     if (this.newTodoTitle.trim().length === 0) {
@@ -70,6 +68,7 @@ export class TodoComponent implements OnInit {
 
     this.addTodoError = false;
     this.newTodoTitle = '';
+
     const currentDate = new Date();
     const formattedDate = `${this.formatNumber(currentDate.getDate())}.${this.formatNumber(currentDate.getMonth() + 1)}.${currentDate.getFullYear()}`;
     const formattedTime = `${this.formatNumber(currentDate.getHours())}:${this.formatNumber(currentDate.getMinutes())}:${this.formatNumber(currentDate.getSeconds())}`;
