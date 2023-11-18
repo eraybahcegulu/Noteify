@@ -1,4 +1,5 @@
-export interface NestedData {
+export interface NotesData {
+  id?: string;
   note: string;
   createdAt: string;
 }
@@ -6,5 +7,5 @@ export interface NestedData {
 export interface Title {
   id?: string;
   title: string;
-  notes?: NestedData[];
+  notes?: NotesData[];
 }
