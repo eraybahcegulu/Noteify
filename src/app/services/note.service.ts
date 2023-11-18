@@ -3,45 +3,64 @@ import { AngularFireDatabase, AngularFireList, SnapshotAction } from '@angular/f
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Note } from '../models/note.model';
+import { NestedData, Title } from '../models/note.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NoteService {
-  private noteList: AngularFireList<Note>;
+  private titleList: AngularFireList<Title>;
 
   constructor(private db: AngularFireDatabase) {
-    this.noteList = db.list('Note/notes');
+    this.titleList = db.list('Note/titles');
   }
 
-  getNotes(): Observable<Note[]> {
-    return this.noteList.snapshotChanges().pipe(
+  getTitles(): Observable<Title[]> {
+    return this.titleList.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map(c => this.mapTodoFromSnapshot(c));
+        return changes.map(c => this.mapNoteTitleFromSnapshot(c));
       })
     );
   }
-  
-  private mapTodoFromSnapshot(change: SnapshotAction<Note>): Note {
-    const data = change.payload.val() as Note;
+
+  private mapNoteTitleFromSnapshot(change: SnapshotAction<Title>): Title {
+    const data = change.payload.val() as Title;
     return {
       id: change.payload.key as string,
-      note: data.note,
-      createdAt: data.createdAt,
+      title: data.title,
+      notes: data.notes || []
     };
   }
 
+  async addTitle(title: Title): Promise<any> {
+    const titleNode: Title = {
+      title: title.title,
+    };
 
-  async addNote(note: Note): Promise<any> {
-    const ref = await this.noteList.push(note);
+    const titleListPath = `Note/titles/`;
+    this.titleList = this.db.list(titleListPath);
+    const ref = await this.titleList.push(titleNode);
     return ref;
   }
 
-  async deleteNote(id: string): Promise<void> {
-
-      await this.noteList.remove(id);
- 
+  async deleteTitle(id: string): Promise<void> {
+    await this.titleList.remove(id);
   }
 
+  async addNoteToTitle(newNoteObject: NestedData, title: Title): Promise<any> {
+    if (!title.notes) {
+      title.notes = [];
+    }
+
+    const newNote: NestedData = {
+      note: newNoteObject.note,
+      createdAt: newNoteObject.createdAt,
+    };
+
+    const noteListPath = `Note/titles/${title.id}/notes`;
+    const noteListRef = this.db.list(noteListPath);
+
+    const ref = await noteListRef.push(newNote);
+    return { id: ref.key as string, ...newNote };
+  }
 }

@@ -3,39 +3,102 @@
     <div class="row justify-content-center">
         <nz-card style="max-width: 720px;">
             <div class="row justify-content-center">
-                <nz-card style="max-width: 650px;">
+                <nz-card style="max-width: 650px; display: flex; justify-content: center;">
+                    <div>
+                        <nz-select [(ngModel)]="titleSelect" style="width: 300px; " nzShowSearch nzAllowClear
+                            [nzDropdownRender]="renderTemplate" nzPlaceHolder="Select Title">
+                            <nz-option *ngFor="let title of titles.reverse()" [nzLabel]="title.title"
+                                [nzValue]="title.title"></nz-option>
+                        </nz-select>
+                        <ng-template #renderTemplate>
+
+                            <div class="container">
+                                <input style="margin-top: 5px;" type="text" nz-input placeholder="New Title"
+                                    [(ngModel)]="newTitle" />
+                                <button (click)="addTitle(newTitle)" style="margin-top: 10px; margin-bottom: 10px;"
+                                    nz-button nzType="primary">
+                                    Add
+                                </button>
+
+                                <nz-alert style="margin-bottom: 10px;" *ngIf="newTitleErrorEmpty" nzType="error"
+                                    nzMessage="Title cannot be empty." nzShowIcon> </nz-alert>
+
+                                <nz-alert style="margin-bottom: 10px;" *ngIf="newTitleErrorExists" nzType="error"
+                                    nzMessage="This title already exists." nzShowIcon> </nz-alert>
+                            </div>
+                        </ng-template>
+
+                    </div>
+
                     <textarea maxlength="500" [(ngModel)]="newNote" style="margin-top: 10px;" nz-input
                         placeholder="My Note" [nzAutosize]="{ minRows: 3, maxRows: 5 }"></textarea>
-                    <button (click)="addNote(newNote)" style="margin-top: 10px;" nz-button nzType="primary">
-                        Save
-                    </button>
-                    <nz-alert style="margin-top: 10px; width: 200px;" *ngIf="newNoteError" nzType="error"
-                        nzMessage="Note cannot be empty." nzShowIcon> </nz-alert>
-                </nz-card>
 
+                    <div>
+
+                        <div style="float: left;">
+                            <button (click)="addNote(newNote,titleSelect)"
+                                style="margin-top: 10px; height: 40px; width: 75px;" nz-button nzType="primary">
+                                Save
+                            </button>
+                        </div>
+
+                        <div style="float:left; margin-left: 5px;">
+                            <nz-alert style="margin-top: 10px;" *ngIf="titleSelectErrorEmpty" nzType="error"
+                                nzMessage="Title cannot be empty." nzShowIcon> </nz-alert>
+
+                            <nz-alert style="margin-top: 10px;" *ngIf="newNoteErrorEmpty" nzType="error"
+                                nzMessage="Note cannot be empty." nzShowIcon> </nz-alert>
+
+                            <nz-alert style="margin-top: 10px;" *ngIf="newNoteSaved" nzType="success"
+                                nzMessage="Your note has been saved." nzShowIcon> </nz-alert>
+                        </div>
+                    </div>
+
+                </nz-card>
             </div>
 
-            <nz-collapse *ngIf="notes.length > 0" nzAccordion
-                style="margin-top: 20px; overflow-y: auto; max-height: 300px; ">
-                <nz-collapse-panel *ngFor="let note of notes.reverse()" [nzHeader]="Header">
+            <nz-collapse *ngIf="titles.length > 0" nzAccordion
+                style="margin-top: 20px; overflow-y: auto; max-height: 350px; ">
+                <nz-collapse-panel *ngFor="let title of titles" [nzExtra]="deleteTitleButton" [nzHeader]="Header">
+                    <ng-template #deleteTitleButton>
+
+                        <a (click)="deleteTitle(title.id)" (click)="$event.stopPropagation()"> <i
+                                class="fa-solid fa-xmark" style="color: #000000;"> </i> </a>
+                    </ng-template>
                     <ng-template #Header>
-                        <strong> {{note.createdAt}}</strong>
+                        <strong> {{title.title}}</strong>
                     </ng-template>
 
-                    <div style="max-height: 200px; overflow-y: auto;">
-                        <p style="margin: 0; word-wrap: break-word;">
-                            {{ note.note }}
-                        </p>
-                    </div>
-                    <button style="margin-top: 10px;" (click)="deleteNote(note.id)" nz-button nzType="primary"
-                        nzDanger>Delete</button>
+                    <nz-card nzType="inner" style="margin-top: 20px; margin-bottom: 20px;"
+                        *ngFor="let noteKey of title.notes | keyvalue" [nzTitle]="createdAt" [nzExtra]="extraTemplate">
+                        <ng-container *ngIf="isNoteObject(noteKey.value)">
+                            <p style="word-wrap: break-word;"> {{noteKey.value.note }}</p>
+                        </ng-container>
+
+                        <ng-template #createdAt>
+                            <ng-container *ngIf="isCreatedAtObject(noteKey.value)">
+                                <strong> {{noteKey.value.createdAt }} </strong>
+                            </ng-container>
+
+                        </ng-template>
+
+                    </nz-card>
+
+                    <nz-alert *ngIf="(title.notes ?? []).length === 0" nzType="warning"
+                        nzMessage="No notes found in {{title.title}} title" nzShowIcon></nz-alert>
+
+                    <ng-template #extraTemplate>
+                        <a> <i class="fa-solid fa-xmark" style="color: #000000;"></i> </a>
+                    </ng-template>
                 </nz-collapse-panel>
             </nz-collapse>
 
-            <div *ngIf="notes.length === 0" class="container " style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <nz-empty  [nzNotFoundContent]="null"> </nz-empty>
-                <nz-alert style="width: 200px;" nzType="warning" nzMessage=" No todos available" nzShowIcon></nz-alert>
+            <div *ngIf="titles.length === 0" class="container "
+                style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <nz-empty [nzNotFoundContent]="null"> </nz-empty>
+                <nz-alert style="width: 200px;" nzType="warning" nzMessage=" No titles available" nzShowIcon></nz-alert>
             </div>
+
         </nz-card>
     </div>
 </div>
