@@ -1,1 +1,78 @@
 <app-home [homeShoppingColor]="shoppingColor"></app-home>
+
+<div class="container-sm mt-4">
+    <div class="row justify-content-center">
+        <nz-card style="max-width: 500px;">
+            <div class="col-md-12 mx-auto">
+                <h4>MY SHOPPING LIST</h4>
+                <div class="mt-2" style="display: flex; align-items: center;">
+                    <label class="form-check-label">
+                        <input nz-input [(ngModel)]="newProduct" placeholder="New Product" nzSize="default"
+                            maxlength="40" />
+                    </label>
+                    <button class="btn btn-sm" (click)="addProduct(newProduct)">
+                        <i class="fa-solid fa-plus fa-xl" style="color: black; font-size: 15px; "></i>
+                    </button>
+                </div>
+
+                <nz-card style="margin-top: 10px;">
+                    <nz-table #fixedTable  nzSize="small" [nzScroll]="{ y: '300px' }" [nzNoResult]="noProduct">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="align-middle text-center"
+                                    style="display: flex; justify-content: space-between; align-items: center; text-align: center;">
+                                    <div class="align-middle" style="height: 15px;">
+                                        Product
+                                    </div>
+                                    <div style="height: 15px; margin-bottom: 10px;">
+                                        <a *ngIf="products.length > 0" (click)="deleteAllProducts(products)" nz-button nzType="link" nzDanger>
+                                            Clear List
+                                        </a>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="boundary" cdkDropList (cdkDropListDropped)="drop($event)">
+                            <ng-template #noProduct>
+                                <tr *ngIf="products.length === 0">
+                                    <td colspan="4">
+                                        <nz-empty [nzNotFoundContent]="null"></nz-empty>
+
+                                        <nz-alert nzType="warning" nzMessage=" No product available"
+                                            nzShowIcon></nz-alert>
+                                    </td>
+                                </tr>
+                            </ng-template>
+
+                            <tr *ngFor="let product of products" cdkDragBoundary=".boundary" cdkDragLockAxis="y"
+                                cdkDrag>
+                                <td class="text-center align-middle"
+                                    style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center;">
+                                        <i [ngClass]="{'fa fa-square-check': product.bought, 'far fa-square': !product.bought}"
+                                            style="cursor: pointer;" [style.color]="product.bought ? 'green' : 'black'"
+                                            (click)="updateProductStatus(product)"></i>
+
+                                            <i *ngIf="product.bought" class="fa-solid fa-cart-arrow-down" style="color: green; margin-left: 5px;"></i>
+                                        <label class="form-check-label" [class.bought]="product.bought"
+                                            style="margin-left: 10px;">
+                                            {{product.product}} </label>
+
+                                            
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-right: 10px;">
+                                        <button class="btn btn-sm">
+                                            <span (click)="deleteProduct(product.id)" nz-icon nzType="delete"
+                                                nzTheme="outline" style="color: red;"></span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </nz-card>
+            </div>
+        </nz-card>
+    </div>
+</div>
