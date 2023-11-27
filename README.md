@@ -10,4 +10,6 @@
 
 ![3](https://github.com/eraybahcegulu/Noteify/assets/84785201/536b4eaa-100c-4fc9-9922-0323cc7cc395)
 
-![4](https://github.com/eraybahcegulu/Noteify/assets/84785201/ec1e2878-2b52-4291-b06b-75e0a50e9f6b)
+![4](https://github.com/eraybahcegulu/Noteify/assets/84785201/b40b4725-d510-4aad-b50a-6f983239a73f)
+
+![5](https://github.com/eraybahcegulu/Noteify/assets/84785201/70f214a7-43cc-4bb2-9f59-070a074f4e1f)
