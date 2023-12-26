@@ -98,16 +98,16 @@
                                     </td>
                                     <td class="text-center align-middle">{{ todo.createdAt }}</td>
                                     <td class="text-center align-middle">
-                                        <button class="btn btn-sm" *ngIf="!editingTodoId || editingTodoId !== todo.id"
-                                            (click)="startEditing(todo)">
+                                        
+                                        <button class="btn btn-sm" 
+                                                [disabled]="editingTodoId && editingTodoId !== todo.id"
+                                                (click)="startEditing(todo)"
+                                                [ngStyle]="{ 'opacity': (editingTodoId && editingTodoId !== todo.id) ? '0.3' : '1' }">
                                             <span nz-icon nzType="edit" nzTheme="outline"></span>
-
                                         </button>
-
-
+                                    
                                         <button class="btn btn-sm" (click)="deleteTodo(todo.id)">
                                             <span nz-icon nzType="delete" nzTheme="outline" style="color: red;"></span>
-
                                         </button>
                                     </td>
                                 </tr>
